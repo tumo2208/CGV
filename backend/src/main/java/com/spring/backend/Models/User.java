@@ -1,8 +1,10 @@
 package com.spring.backend.Models;
 
+import com.spring.backend.DTOs.User.UserDTO;
 import com.spring.backend.Enums.User.Gender;
 import com.spring.backend.Enums.User.Provider;
 import com.spring.backend.Enums.User.Role;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -11,9 +13,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,8 +27,8 @@ import java.util.List;
 
 @Entity
 @Table(name = "users")
-@Getter
-@Setter
+@Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class User implements UserDetails {
@@ -34,10 +36,13 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true, nullable = false)
     private String email;
+    @Column(unique = true)
     private String phone;
     private String password;
 
+    @Column(nullable = false)
     private String fullName;
     @Enumerated(value = EnumType.STRING)
     private Gender gender;
@@ -84,5 +89,22 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public UserDTO convertToDto() {
+        return UserDTO.builder()
+                .id(this.id)
+                .email(this.email)
+                .phone(this.phone)
+                .fullName(this.fullName)
+                .role(this.role)
+                .dob(this.dob)
+                .gender(this.gender)
+                .address(this.address)
+                .district(this.district)
+                .city(this.city)
+                .avatarUrl(this.avatarUrl)
+                .createdAt(this.createdAt)
+                .build();
     }
 }

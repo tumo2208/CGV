@@ -1,6 +1,5 @@
 package com.spring.backend.Services;
 
-import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;

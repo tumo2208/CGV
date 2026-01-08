@@ -13,9 +13,9 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import jakarta.persistence.Id;
 
 import java.util.ArrayList;
@@ -26,8 +26,8 @@ import java.util.List;
 @Table(name = "cinemas", indexes = {
         @Index(name = "idx_cinema_city", columnList = "city"),
 })
-@Getter
-@Setter
+@Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Cinema {
