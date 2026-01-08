@@ -1,7 +1,9 @@
 package com.spring.backend.Controllers;
 
+import com.spring.backend.DTOs.User.ChangeForgotPasswordRequest;
 import com.spring.backend.DTOs.User.LoginRequest;
 import com.spring.backend.DTOs.User.RegisterRequest;
+import com.spring.backend.DTOs.User.VerifyOtpRequest;
 import com.spring.backend.Exceptions.InvalidCredentialsException;
 import com.spring.backend.Exceptions.ResourceAlreadyExistedException;
 import com.spring.backend.Exceptions.ResourceNotFoundException;
@@ -47,6 +49,41 @@ public class AuthController {
         } catch (InvalidCredentialsException e) {
             return ResponseEntity.status(401).body(e.getMessage());
         }catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/reset-password-otp")
+    public ResponseEntity<?> sendOtp(@RequestBody VerifyOtpRequest request) {
+        try {
+            service.sendMailResetPassword(request.getEmail());
+            return ResponseEntity.ok("OTP sent successfully");
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(404).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/otp-verify")
+    public ResponseEntity<?> verifyOtp(@RequestBody VerifyOtpRequest request) {
+        try {
+            return ResponseEntity.ok(service.verifyOtp(request));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/forgot-password-change")
+    public ResponseEntity<?> changeForgotPassword(@RequestBody ChangeForgotPasswordRequest request) {
+        try {
+            service.changeForgotPassword(request);
+            return ResponseEntity.ok("Password changed successfully");
+        } catch (InvalidCredentialsException e) {
+            return ResponseEntity.status(401).body(e.getMessage());
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(404).body(e.getMessage());
+        } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }

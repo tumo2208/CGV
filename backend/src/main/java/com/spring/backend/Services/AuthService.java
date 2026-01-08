@@ -1,7 +1,9 @@
 package com.spring.backend.Services;
 
+import com.spring.backend.DTOs.User.ChangeForgotPasswordRequest;
 import com.spring.backend.DTOs.User.RegisterRequest;
 import com.spring.backend.DTOs.User.LoginRequest;
+import com.spring.backend.DTOs.User.VerifyOtpRequest;
 import com.spring.backend.Enums.User.Gender;
 import com.spring.backend.Enums.User.Role;
 import com.spring.backend.Exceptions.InvalidCredentialsException;
@@ -17,6 +19,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.Optional;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Service
 public class AuthService {
@@ -31,6 +35,9 @@ public class AuthService {
 
     @Autowired
     private StorageService storageService;
+
+    @Autowired
+    private MailService mailService;
 
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
@@ -86,5 +93,47 @@ public class AuthService {
         }
 
         return jwtService.generateToken(user);
+    }
+
+    private String createOtpEmailBody(String otpCode) {
+        return String.format("""
+            <div style="font-family: Arial, sans-serif; padding: 20px; text-align: center; border: 1px solid #ddd; max-width: 500px; margin: auto;">
+                <h2 style="color: #c90000;">Mã Đăng Nhập</h2>
+                <p>Đây là mã đăng nhập (OTP) của bạn để đặt lại mật khẩu:</p>
+                <div style="font-size: 36px; font-weight: bold; letter-spacing: 5px; margin: 30px 0; padding: 10px; border: 2px dashed #c90000;">
+                    %s
+                </div>
+                <p style="color: #888;">Mã này sẽ sớm hết hạn. Vui lòng sử dụng ngay.</p>
+            </div>
+            """, otpCode);
+    }
+
+    public void sendMailResetPassword(String email) {
+        Optional<User> user = reposistory.findByEmail(email);
+        if (!user.isPresent()) {
+            throw new ResourceNotFoundException("User not found with email: " + email);
+        }
+
+        String otp = ThreadLocalRandom.current().nextInt(100000, 1000000) + "";
+        redisService.storeOtp(email, otp);
+
+        mailService.sendEmail(email, "Yêu cầu đặt lại mật khẩu của bạn", createOtpEmailBody(otp));
+    }
+
+    public boolean verifyOtp(VerifyOtpRequest request) {
+        return redisService.verifyOtp(request.getEmail(), request.getOtp());
+    }
+
+    public void changeForgotPassword(ChangeForgotPasswordRequest request) {
+        if (!redisService.verifyOtp(request.getEmail(), request.getOtp())) {
+            throw new InvalidCredentialsException("Invalid OTP");
+        }
+
+        redisService.removeOtp(request.getEmail());
+        User user = reposistory.findByEmail(request.getEmail())
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + request.getEmail()));
+
+        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        reposistory.save(user);
     }
 }
