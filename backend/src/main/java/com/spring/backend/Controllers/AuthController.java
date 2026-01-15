@@ -8,6 +8,7 @@ import com.spring.backend.Exceptions.InvalidCredentialsException;
 import com.spring.backend.Exceptions.ResourceAlreadyExistedException;
 import com.spring.backend.Exceptions.ResourceNotFoundException;
 import com.spring.backend.Services.AuthService;
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -60,6 +61,8 @@ public class AuthController {
             return ResponseEntity.ok("OTP sent successfully");
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(404).body(e.getMessage());
+        } catch (MessagingException e) {
+            return ResponseEntity.status(500).body("Failed to send OTP email: " + e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

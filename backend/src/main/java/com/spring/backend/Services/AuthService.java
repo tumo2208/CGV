@@ -13,6 +13,7 @@ import com.spring.backend.Exceptions.ResourceNotFoundException;
 import com.spring.backend.Models.User;
 import com.spring.backend.Repositories.UserRepository;
 import com.spring.backend.Security.JwtService;
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -108,7 +109,7 @@ public class AuthService {
             """, otpCode);
     }
 
-    public void sendMailResetPassword(String email) {
+    public void sendMailResetPassword(String email) throws MessagingException {
         Optional<User> user = reposistory.findByEmail(email);
         if (!user.isPresent()) {
             throw new ResourceNotFoundException("User not found with email: " + email);
