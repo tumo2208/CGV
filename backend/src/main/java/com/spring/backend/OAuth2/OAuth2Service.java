@@ -3,7 +3,7 @@ package com.spring.backend.OAuth2;
 import com.spring.backend.Enums.User.Provider;
 import com.spring.backend.Enums.User.Role;
 import com.spring.backend.Models.User;
-import com.spring.backend.Repositories.UserRepository;
+import com.spring.backend.Repositories.User.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;

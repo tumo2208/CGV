@@ -1,6 +1,6 @@
-package com.spring.backend.Controllers;
+package com.spring.backend.Controllers.Test;
 
-import com.spring.backend.Services.StorageService;
+import com.spring.backend.Services.Common.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;

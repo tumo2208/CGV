@@ -16,6 +16,10 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "showtime_seats")
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ShowtimeSeat {
     @Embeddable
     @Data

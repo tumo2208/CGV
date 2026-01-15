@@ -1,7 +1,7 @@
 package com.spring.backend.Security;
 
 import com.spring.backend.Models.User;
-import com.spring.backend.Services.RedisService;
+import com.spring.backend.Services.Common.RedisService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

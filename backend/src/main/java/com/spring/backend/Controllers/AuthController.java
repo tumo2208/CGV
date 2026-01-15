@@ -7,7 +7,7 @@ import com.spring.backend.DTOs.User.VerifyOtpRequest;
 import com.spring.backend.Exceptions.InvalidCredentialsException;
 import com.spring.backend.Exceptions.ResourceAlreadyExistedException;
 import com.spring.backend.Exceptions.ResourceNotFoundException;
-import com.spring.backend.Services.AuthService;
+import com.spring.backend.Services.User.AuthService;
 import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

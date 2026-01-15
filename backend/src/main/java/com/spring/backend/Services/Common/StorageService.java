@@ -1,4 +1,4 @@
-package com.spring.backend.Services;
+package com.spring.backend.Services.Common;
 
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;

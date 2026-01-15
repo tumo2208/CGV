@@ -7,7 +7,7 @@ import com.spring.backend.Exceptions.ActionNotAllowedException;
 import com.spring.backend.Exceptions.InvalidCredentialsException;
 import com.spring.backend.Exceptions.ResourceAlreadyExistedException;
 import com.spring.backend.Exceptions.ResourceNotFoundException;
-import com.spring.backend.Services.UserService;
+import com.spring.backend.Services.User.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

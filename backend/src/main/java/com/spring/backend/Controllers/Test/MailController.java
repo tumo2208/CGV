@@ -1,6 +1,6 @@
-package com.spring.backend.Controllers;
+package com.spring.backend.Controllers.Test;
 
-import com.spring.backend.Services.MailService;
+import com.spring.backend.Services.Common.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;

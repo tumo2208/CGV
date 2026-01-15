@@ -1,5 +1,6 @@
 package com.spring.backend.Models;
 
+import com.spring.backend.DTOs.Cinema.CinemaDTO;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
@@ -54,16 +55,16 @@ public class Cinema {
     @OneToMany(mappedBy = "cinema", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Auditorium> auditoriums = new ArrayList<>();
 
-//    public CinemaResponse convertToDTO() {
-//        return CinemaResponse.builder()
-//                .id(this.id)
-//                .name(this.name)
-//                .address(this.address)
-//                .district(this.district)
-//                .city(this.city)
-//                .phone(this.phone)
-//                .images(this.images)
-//                .build();
-//    }
+    public CinemaDTO convertToDTO() {
+        return CinemaDTO.builder()
+                .id(this.id)
+                .name(this.name)
+                .address(this.address)
+                .district(this.district)
+                .city(this.city)
+                .phone(this.phone)
+                .images(this.images)
+                .build();
+    }
 }
 

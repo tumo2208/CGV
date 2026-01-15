@@ -1,4 +1,4 @@
-package com.spring.backend.Services;
+package com.spring.backend.Services.User;
 
 import com.spring.backend.DTOs.User.ChangeForgotPasswordRequest;
 import com.spring.backend.DTOs.User.RegisterRequest;
@@ -11,8 +11,11 @@ import com.spring.backend.Exceptions.MissingRequiredFieldException;
 import com.spring.backend.Exceptions.ResourceAlreadyExistedException;
 import com.spring.backend.Exceptions.ResourceNotFoundException;
 import com.spring.backend.Models.User;
-import com.spring.backend.Repositories.UserRepository;
+import com.spring.backend.Repositories.User.UserRepository;
 import com.spring.backend.Security.JwtService;
+import com.spring.backend.Services.Common.MailService;
+import com.spring.backend.Services.Common.RedisService;
+import com.spring.backend.Services.Common.StorageService;
 import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

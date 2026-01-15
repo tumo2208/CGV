@@ -1,4 +1,4 @@
-package com.spring.backend.Services;
+package com.spring.backend.Services.Common;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;

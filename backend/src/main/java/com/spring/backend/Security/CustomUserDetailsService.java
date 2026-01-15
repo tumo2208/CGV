@@ -1,7 +1,7 @@
 package com.spring.backend.Security;
 
 import com.spring.backend.Models.User;
-import com.spring.backend.Repositories.UserRepository;
+import com.spring.backend.Repositories.User.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
