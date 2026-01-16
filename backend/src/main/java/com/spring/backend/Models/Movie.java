@@ -1,5 +1,6 @@
 package com.spring.backend.Models;
 
+import com.spring.backend.DTOs.Movie.MovieDTO;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -45,7 +46,28 @@ public class Movie {
     private String star3;
     private String star4;
     private long noOfVotes;
+    private int status;
 
     @OneToMany(mappedBy = "movie", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Showtime> showtimes = new ArrayList<>();
+
+    public MovieDTO convertToDTO() {
+        return MovieDTO.builder()
+                .id(this.id)
+                .title(this.title)
+                .releasedYear(this.releasedYear)
+                .runtime(this.runtime)
+                .genre(this.genre)
+                .imdbRating(this.imdbRating)
+                .overview(this.overview)
+                .metaScore(this.metaScore)
+                .director(this.director)
+                .star1(this.star1)
+                .star2(this.star2)
+                .star3(this.star3)
+                .star4(this.star4)
+                .noOfVotes(this.noOfVotes)
+                .posterLink(this.posterLink)
+                .build();
+    }
 }
