@@ -5,6 +5,7 @@ import com.spring.backend.DTOs.User.RegisterRequest;
 import com.spring.backend.DTOs.User.LoginRequest;
 import com.spring.backend.DTOs.User.VerifyOtpRequest;
 import com.spring.backend.Enums.User.Gender;
+import com.spring.backend.Enums.User.Provider;
 import com.spring.backend.Enums.User.Role;
 import com.spring.backend.Exceptions.InvalidCredentialsException;
 import com.spring.backend.Exceptions.MissingRequiredFieldException;
@@ -78,6 +79,7 @@ public class AuthService {
                 .city(request.getCity())
                 .role(Role.USER)
                 .avatarUrl(avatarUrl)
+                .provider(Provider.SELF)
                 .build();
 
         reposistory.save(newUser);

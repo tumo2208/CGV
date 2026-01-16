@@ -29,7 +29,7 @@ public class CinemaController {
     @Autowired
     private AuditoriumService auditoriumService;
 
-    @PreAuthorize("hasAuthority('LOCAL_ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("")
     public ResponseEntity<?> createCinema(@ModelAttribute CinemaRequest req) {
         try {
@@ -40,7 +40,7 @@ public class CinemaController {
         }
     }
 
-    @PreAuthorize("hasAuthority('LOCAL_ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/{id}/auditoriums")
     public ResponseEntity<?> createAuditorium(@PathVariable("id") Long CinemaId, @RequestBody AuditoriumRequest body) {
         try {
@@ -53,7 +53,7 @@ public class CinemaController {
         }
     }
 
-    @PreAuthorize("hasAuthority('LOCAL_ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/{id}/auditoriums")
     public ResponseEntity<?> getAuditoriumsByCinemaId(@PathVariable("id") Long CinemaId) {
         try {
@@ -65,7 +65,7 @@ public class CinemaController {
         }
     }
 
-    @PreAuthorize("hasAuthority('LOCAL_ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteCinema(@PathVariable Long id) {
         try {
@@ -78,7 +78,7 @@ public class CinemaController {
         }
     }
 
-    @PreAuthorize("hasAuthority('LOCAL_ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<?> updateCinema(@PathVariable Long id, @ModelAttribute CinemaRequest req) {
         try {

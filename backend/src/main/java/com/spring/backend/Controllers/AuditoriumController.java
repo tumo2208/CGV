@@ -30,7 +30,7 @@ public class AuditoriumController {
         }
     }
 
-    @PreAuthorize("hasAuthority('LOCAL_ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/{id}/pattern")
     public ResponseEntity<?> updateAuditorium(@PathVariable("id") Long auditoriumId, @RequestBody String newPattern) {
         try {
@@ -43,7 +43,7 @@ public class AuditoriumController {
         }
     }
 
-    @PreAuthorize("hasAuthority('LOCAL_ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteAuditorium(@PathVariable("id") Long auditoriumId) {
         try {

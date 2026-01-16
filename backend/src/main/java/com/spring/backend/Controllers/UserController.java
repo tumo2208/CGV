@@ -31,7 +31,7 @@ public class UserController {
     private UserService service;
 
     @PostMapping("/logout")
-    @PreAuthorize("hasAnyAuthority('USER', 'LOCAL_ADMIN', 'SUPER_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public ResponseEntity<?> logout(HttpServletRequest request) {
         try {
             // Get token from header Authorization
@@ -55,7 +55,7 @@ public class UserController {
     }
 
     @GetMapping("/profile")
-    @PreAuthorize("hasAnyAuthority('USER', 'LOCAL_ADMIN', 'SUPER_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public ResponseEntity<?> getProfile() {
         try {
             return ResponseEntity.ok(service.profile());
@@ -67,7 +67,7 @@ public class UserController {
     }
 
     @PutMapping("/profile")
-    @PreAuthorize("hasAnyAuthority('USER', 'LOCAL_ADMIN', 'SUPER_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public ResponseEntity<?> updateProfile(@ModelAttribute RegisterRequest request) {
         try {
             service.updateProfile(request);
@@ -84,7 +84,7 @@ public class UserController {
     }
 
     @PutMapping("/password")
-    @PreAuthorize("hasAnyAuthority('USER', 'LOCAL_ADMIN', 'SUPER_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public ResponseEntity<?> changePassword(@RequestBody ChangePasswordRequest request) {
         try {
             service.changePassword(request);
@@ -100,7 +100,7 @@ public class UserController {
         }
     }
 
-    @PreAuthorize("hasAuthority('LOCAL_ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("")
     public ResponseEntity<?> getAllUsers() {
         try {
@@ -110,7 +110,7 @@ public class UserController {
         }
     }
 
-    @PreAuthorize("hasAuthority('LOCAL_ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/{userId}")
     public ResponseEntity<?> deleteUser(@PathVariable("userId") Long userId) {
         try {
@@ -123,7 +123,7 @@ public class UserController {
         }
     }
 
-    @PreAuthorize("hasAuthority('LOCAL_ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/{userId}/role")
     public ResponseEntity<?> changeUserRole(@PathVariable("userId") Long userId, @RequestBody String role) {
         try {
