@@ -1,10 +1,10 @@
 package com.spring.backend.Models;
 
-import com.spring.backend.Enums.Movie.CommentType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,21 +14,22 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "comments")
+@Table(name = "comment_likes")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Comment {
+public class CommentLike {
     @Id
     private Long id;
-    private Long userId;
-    private Long targetId;
-    @Enumerated(value = EnumType.STRING)
-    private CommentType type;
-    private String content;
-    private double rating;
-    private int likes;
-    private LocalDateTime updatedAt;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "comment_id")
+    private Comment comment;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
     private final LocalDateTime createdAt = LocalDateTime.now();
 }

@@ -135,4 +135,17 @@ public class UserController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
+    @PostMapping("/comment-like/{commentId}")
+    public ResponseEntity<?> likeOrUnlikeComment(@PathVariable("commentId") Long commentId) {
+        try {
+            service.likeOrUnlikeComment(commentId);
+            return ResponseEntity.ok("Action completed successfully");
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(404).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }

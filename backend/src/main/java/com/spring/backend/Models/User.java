@@ -1,6 +1,7 @@
 package com.spring.backend.Models;
 
 import com.spring.backend.DTOs.User.UserDTO;
+import com.spring.backend.DTOs.User.UserPartDTO;
 import com.spring.backend.Enums.User.Gender;
 import com.spring.backend.Enums.User.Provider;
 import com.spring.backend.Enums.User.Role;
@@ -105,6 +106,15 @@ public class User implements UserDetails {
                 .city(this.city)
                 .avatarUrl(this.avatarUrl)
                 .createdAt(this.createdAt)
+                .build();
+    }
+
+    public UserPartDTO convertToPartDTO() {
+        return UserPartDTO.builder()
+                .id(getId())
+                .fullName(getFullName())
+                .email(getEmail())
+                .img(getAvatarUrl())
                 .build();
     }
 }

@@ -3,6 +3,7 @@ package com.spring.backend.Services.User;
 import com.spring.backend.DTOs.User.ChangePasswordRequest;
 import com.spring.backend.DTOs.User.RegisterRequest;
 import com.spring.backend.DTOs.User.UserDTO;
+import com.spring.backend.DTOs.User.UserPartDTO;
 import com.spring.backend.Enums.User.Gender;
 import com.spring.backend.Enums.User.Provider;
 import com.spring.backend.Enums.User.Role;
@@ -10,7 +11,11 @@ import com.spring.backend.Exceptions.ActionNotAllowedException;
 import com.spring.backend.Exceptions.InvalidCredentialsException;
 import com.spring.backend.Exceptions.ResourceAlreadyExistedException;
 import com.spring.backend.Exceptions.ResourceNotFoundException;
+import com.spring.backend.Models.Comment;
+import com.spring.backend.Models.CommentLike;
 import com.spring.backend.Models.User;
+import com.spring.backend.Repositories.Comment.CommentLikeRepository;
+import com.spring.backend.Repositories.Comment.CommentRepository;
 import com.spring.backend.Repositories.User.UserRepository;
 import com.spring.backend.Security.JwtService;
 import com.spring.backend.Services.Common.RedisService;
@@ -40,6 +45,13 @@ public class UserService {
     @Autowired
     private StorageService storageService;
 
+    @Autowired
+    private CommentRepository commentRepository;
+
+    @Autowired
+    private CommentLikeRepository commentLikeRepository;
+
+
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public void logout(String token) {
@@ -58,6 +70,12 @@ public class UserService {
 
     public UserDTO profile() {
         return getCurrentUser().convertToDto();
+    }
+
+    public UserPartDTO getUserProfile(Long userId) {
+        User user = repository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
+        return user.convertToPartDTO();
     }
 
     public void changePassword(ChangePasswordRequest request) {
@@ -133,5 +151,28 @@ public class UserService {
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
         user.setRole(Role.valueOf(role));
         repository.save(user);
+    }
+
+
+
+    public void likeOrUnlikeComment(Long commentId) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new ResourceNotFoundException("Comment not found"));
+        User user = getCurrentUser();
+
+        Optional<CommentLike> existingLike = commentLikeRepository.findByCommentIdAndUserId(commentId, user.getId());
+        if (existingLike.isPresent()) {
+            // Unlike the comment
+            commentLikeRepository.delete(existingLike.get());
+            comment.setLikes(comment.getLikes() - 1);
+        } else {
+            // Like the comment
+            CommentLike newLike = CommentLike.builder()
+                    .comment(comment)
+                    .user(user)
+                    .build();
+            commentLikeRepository.save(newLike);
+            comment.setLikes(comment.getLikes() + 1);
+        }
     }
 }
