@@ -16,6 +16,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,7 +76,8 @@ public class AuditoriumService {
         // Update seating arrangement based on the new pattern
         List<Seat> updatedSeats = seatService.updateSeats(auditorium);
 
-        List<Showtime> showtimes = showtimeRepository.findUpcomingShowtimesByAuditorium(auditoriumId);
+        List<Showtime> showtimes = showtimeRepository.findByAuditoriumIdAndStartTimeAfter(auditoriumId,
+                LocalDateTime.now());
 
         if (showtimes == null || showtimes.isEmpty()) {
             return;

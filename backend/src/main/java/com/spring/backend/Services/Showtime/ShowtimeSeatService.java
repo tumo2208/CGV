@@ -14,20 +14,23 @@ public class ShowtimeSeatService {
     @Autowired
     private ShowtimeSeatRepository reposistory;
 
-    public void rebuildShowtimeSeats(Showtime showtime, List<Seat> seats) {
-
-        // Xóa toàn bộ showtime_seats cũ
-        reposistory.deleteAllById_ShowtimeId(showtime.getId());
-
-        // Tạo lại showtime_seats mới
-        List<ShowtimeSeat> newShowtimeSeats = seats.stream()
+    public void buildNewShowtimeSeats(Showtime showtime, List<Seat> seats) {
+        List<ShowtimeSeat> showtimeSeats = seats.stream()
                 .map(seat -> ShowtimeSeat.builder()
                         .id(new ShowtimeSeat.ShowtimeSeatId(showtime.getId(), seat.getId()))
                         .status(0)
                         .price(showtime.getBasePrice())
                         .build())
                 .toList();
+        reposistory.saveAll(showtimeSeats);
+    }
 
-        reposistory.saveAll(newShowtimeSeats);
+    public void deleteShowtimeSeats(Showtime showtime) {
+        reposistory.deleteAllById_ShowtimeId(showtime.getId());
+    }
+
+    public void rebuildShowtimeSeats(Showtime showtime, List<Seat> seats) {
+        deleteShowtimeSeats(showtime);
+        buildNewShowtimeSeats(showtime, seats);
     }
 }

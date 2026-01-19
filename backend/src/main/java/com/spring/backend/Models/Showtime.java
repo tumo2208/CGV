@@ -1,5 +1,6 @@
 package com.spring.backend.Models;
 
+import com.spring.backend.DTOs.Showtime.ShowtimeDTO;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -13,7 +14,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -39,4 +39,15 @@ public class Showtime {
     private LocalDateTime endTime;
 
     private int basePrice;
+
+    public ShowtimeDTO convertToDTO() {
+        return ShowtimeDTO.builder()
+                .id(this.id)
+                .movieId(this.movie.getId())
+                .auditoriumId(this.auditorium.getId())
+                .startTime(this.startTime)
+                .endTime(this.endTime)
+                .basePrice(this.basePrice)
+                .build();
+    }
 }
