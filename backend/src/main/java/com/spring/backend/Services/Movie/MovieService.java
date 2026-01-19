@@ -6,6 +6,9 @@ import com.spring.backend.Models.Movie;
 import com.spring.backend.Repositories.Movie.MovieRepository;
 import com.spring.backend.Services.Common.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -112,7 +115,9 @@ public class MovieService {
         repository.save(movie);
     }
 
-    public List<MovieDTO> getMovies(String genre, String releasedYear, Integer status, String sortBy, String sortDirection) {
+    public List<MovieDTO> getMovies(String genre, String releasedYear, Integer status,
+                                    String sortBy, String sortDirection,
+                                    int page, int size) {
 
         Specification<Movie> spec = Specification.where((Specification<Movie>) null);
 
@@ -140,7 +145,11 @@ public class MovieService {
                 : Sort.Direction.DESC;
         Sort sort = Sort.by(direction, sortBy);
 
-        return repository.findAll(spec, sort).stream().map(Movie::convertToDTO).toList();
+        // 5. Phân trang
+        Pageable pageable = PageRequest.of(page, size, sort);
+        Page<Movie> pageResult = repository.findAll(spec, pageable);
+
+        return pageResult.map(Movie::convertToDTO).getContent();
     }
 
     public List<MovieDTO> searchMovies(String keyword) {

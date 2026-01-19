@@ -75,11 +75,14 @@ public class MovieController {
             @RequestParam(required = false) Integer status,
 
             @RequestParam(defaultValue = "releasedYear") String sortBy,
-            @RequestParam(defaultValue = "desc") String sortDirection) {
+            @RequestParam(defaultValue = "desc") String sortDirection,
+
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
 
         try {
             return ResponseEntity.ok(
-                    service.getMovies(genre, releasedYear, status, sortBy, sortDirection)
+                    service.getMovies(genre, releasedYear, status, sortBy, sortDirection, page, size)
             );
         } catch (Exception e) {
             return ResponseEntity.status(500).body("An error occurred: " + e.getMessage());
