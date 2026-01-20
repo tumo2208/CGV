@@ -1,6 +1,6 @@
 package com.spring.backend.Controllers;
 
-import com.spring.backend.DTOs.Showtime.ShowtimeDTO;
+import com.spring.backend.DTOs.Showtime.ShowtimeRequest;
 import com.spring.backend.Exceptions.ActionNotAllowedException;
 import com.spring.backend.Exceptions.ResourceNotFoundException;
 import com.spring.backend.Services.Showtime.ShowtimeService;
@@ -25,7 +25,7 @@ public class ShowtimeController {
     private ShowtimeService service;
 
     @PostMapping
-    public ResponseEntity createShowtime(@RequestBody ShowtimeDTO req) {
+    public ResponseEntity createShowtime(@RequestBody ShowtimeRequest req) {
         try {
             service.createShowtime(req);
             return ResponseEntity.ok().body("Showtime created successfully");
@@ -39,7 +39,7 @@ public class ShowtimeController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity updateShowtime(@RequestBody ShowtimeDTO req, @PathVariable Long id) {
+    public ResponseEntity updateShowtime(@RequestBody ShowtimeRequest req, @PathVariable Long id) {
         try {
             service.updateShowtime(id, req);
             return ResponseEntity.ok().body("Showtime updated successfully");
@@ -65,7 +65,7 @@ public class ShowtimeController {
     @GetMapping("/{id}")
     public ResponseEntity getShowtimeById(@PathVariable Long id) {
         try {
-            return ResponseEntity.ok().body(service.getShowtimeById(id));
+            return ResponseEntity.ok().body(service.getShowtimeDTOById(id));
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(404).body(e.getMessage());
         } catch (Exception e) {

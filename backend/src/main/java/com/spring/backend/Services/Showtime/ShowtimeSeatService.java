@@ -1,5 +1,6 @@
 package com.spring.backend.Services.Showtime;
 
+import com.spring.backend.DTOs.Showtime.ShowtimeSeatDTO;
 import com.spring.backend.Models.Seat;
 import com.spring.backend.Models.Showtime;
 import com.spring.backend.Models.ShowtimeSeat;
@@ -14,12 +15,21 @@ public class ShowtimeSeatService {
     @Autowired
     private ShowtimeSeatRepository reposistory;
 
+    private int calculateSeatPrice(Showtime showtime, Seat seat) {
+        int basePrice = showtime.getBasePrice();
+        switch (seat.getSeatType()) {
+            case VIP -> basePrice *= 1.5;
+            case COUPLE -> basePrice *= 3.5;
+        }
+        return basePrice;
+    }
+
     public void buildNewShowtimeSeats(Showtime showtime, List<Seat> seats) {
         List<ShowtimeSeat> showtimeSeats = seats.stream()
                 .map(seat -> ShowtimeSeat.builder()
-                        .id(new ShowtimeSeat.ShowtimeSeatId(showtime.getId(), seat.getId()))
+                        .id(new ShowtimeSeat.ShowtimeSeatId(showtime, seat))
                         .status(0)
-                        .price(showtime.getBasePrice())
+                        .price(calculateSeatPrice(showtime, seat))
                         .build())
                 .toList();
         reposistory.saveAll(showtimeSeats);
@@ -32,5 +42,9 @@ public class ShowtimeSeatService {
     public void rebuildShowtimeSeats(Showtime showtime, List<Seat> seats) {
         deleteShowtimeSeats(showtime);
         buildNewShowtimeSeats(showtime, seats);
+    }
+
+    public List<ShowtimeSeatDTO> getShowtimeSeatsByShowtimeId(Long showtimeId) {
+        return reposistory.findById_ShowtimeId(showtimeId).stream().map(ShowtimeSeat::convertToDTO).toList();
     }
 }

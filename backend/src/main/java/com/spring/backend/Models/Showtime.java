@@ -43,8 +43,9 @@ public class Showtime {
     public ShowtimeDTO convertToDTO() {
         return ShowtimeDTO.builder()
                 .id(this.id)
-                .movieId(this.movie.getId())
-                .auditoriumId(this.auditorium.getId())
+                .movieTitle(this.movie.getTitle())
+                .auditoriumName(this.auditorium.getName())
+                .cinemaName(this.auditorium.getCinema().getName())
                 .startTime(this.startTime)
                 .endTime(this.endTime)
                 .basePrice(this.basePrice)

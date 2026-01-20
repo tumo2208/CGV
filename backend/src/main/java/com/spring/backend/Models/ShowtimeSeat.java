@@ -1,5 +1,6 @@
 package com.spring.backend.Models;
 
+import com.spring.backend.DTOs.Showtime.ShowtimeSeatDTO;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
@@ -27,8 +28,13 @@ public class ShowtimeSeat {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class ShowtimeSeatId implements Serializable {
-        private Long showtimeId;
-        private Long seatId;
+        @ManyToOne(fetch = FetchType.LAZY)
+        @JoinColumn(name = "showtime_id")
+        private Showtime showtime;
+
+        @ManyToOne(fetch = FetchType.LAZY)
+        @JoinColumn(name = "seat_id")
+        private Seat seatId;
     }
 
     @EmbeddedId
@@ -40,4 +46,15 @@ public class ShowtimeSeat {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "booking_id")
     private Booking booking;
+
+    public ShowtimeSeatDTO convertToDTO() {
+        return ShowtimeSeatDTO.builder()
+                .showtimeId(this.id.getShowtime().getId())
+                .seatId(this.id.getSeatId().getId())
+                .seatNumber(this.id.getSeatId().getSeatNumber())
+                .seatType(this.id.getSeatId().getSeatType())
+                .status(this.status)
+                .price(this.price)
+                .build();
+    }
 }

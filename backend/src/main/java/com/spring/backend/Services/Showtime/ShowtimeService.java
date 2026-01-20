@@ -1,6 +1,8 @@
 package com.spring.backend.Services.Showtime;
 
 import com.spring.backend.DTOs.Showtime.ShowtimeDTO;
+import com.spring.backend.DTOs.Showtime.ShowtimeRequest;
+import com.spring.backend.DTOs.Showtime.ShowtimeSeatDTO;
 import com.spring.backend.Exceptions.ActionNotAllowedException;
 import com.spring.backend.Exceptions.ResourceNotFoundException;
 import com.spring.backend.Models.Auditorium;
@@ -36,7 +38,7 @@ public class ShowtimeService {
     private ShowtimeSeatService showtimeSeatService;
 
     @Transactional
-    public void createShowtime(ShowtimeDTO req) {
+    public void createShowtime(ShowtimeRequest req) {
         if (req.getAuditoriumId() == null || req.getMovieId() == null) {
             throw new ActionNotAllowedException("Auditorium ID and Movie ID must not be null");
         }
@@ -60,7 +62,7 @@ public class ShowtimeService {
     }
 
     @Transactional
-    public void updateShowtime(Long showtimeId, ShowtimeDTO req) {
+    public void updateShowtime(Long showtimeId, ShowtimeRequest req) {
         Showtime showtime = repository.findById(showtimeId)
                 .orElseThrow(() -> new ResourceNotFoundException("Showtime not found with id: " + showtimeId));
 
@@ -133,9 +135,21 @@ public class ShowtimeService {
         return repository.findAll(spec).stream().map(Showtime::convertToDTO).toList();
     }
 
-    public ShowtimeDTO getShowtimeById(Long showtimeId) {
+    public ShowtimeDTO getShowtimeDTOById(Long showtimeId) {
         Showtime showtime = repository.findById(showtimeId)
                 .orElseThrow(() -> new ResourceNotFoundException("Showtime not found with id: " + showtimeId));
         return showtime.convertToDTO();
+    }
+
+    public Showtime getShowtimeById(Long showtimeId) {
+        return repository.findById(showtimeId)
+                .orElseThrow(() -> new ResourceNotFoundException("Showtime not found with id: " + showtimeId));
+    }
+
+    public List<ShowtimeSeatDTO> getShowtimeSeats(Long showtimeId) {
+        if (!repository.existsById(showtimeId)) {
+            throw new ResourceNotFoundException("Showtime not found with id: " + showtimeId);
+        }
+        return showtimeSeatService.getShowtimeSeatsByShowtimeId(showtimeId);
     }
 }
