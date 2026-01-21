@@ -1,22 +1,16 @@
 package com.spring.backend.Models;
 
 import com.spring.backend.DTOs.Movie.MovieDTO;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Index;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "movies", indexes = {
@@ -47,9 +41,6 @@ public class Movie {
     private String star4;
     private long noOfVotes;
     private int status;
-
-    @OneToMany(mappedBy = "movie", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Showtime> showtimes = new ArrayList<>();
 
     public MovieDTO convertToDTO() {
         return MovieDTO.builder()

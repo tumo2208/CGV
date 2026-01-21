@@ -17,9 +17,8 @@ public class SeatService {
         List<Seat> seats = auditorium.getPattern().generateSeats();
         for (Seat seat : seats) {
             seat.setAuditorium(auditorium);
-            auditorium.getSeats().add(seat);
         }
-        reposistory.saveAll(seats);
+        auditorium.getSeats().addAll(reposistory.saveAll(seats));
     }
 
     public List<Seat> updateSeats(Auditorium auditorium) {

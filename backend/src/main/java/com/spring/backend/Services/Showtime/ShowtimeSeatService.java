@@ -27,12 +27,15 @@ public class ShowtimeSeatService {
     public void buildNewShowtimeSeats(Showtime showtime, List<Seat> seats) {
         List<ShowtimeSeat> showtimeSeats = seats.stream()
                 .map(seat -> ShowtimeSeat.builder()
-                        .id(new ShowtimeSeat.ShowtimeSeatId(showtime, seat))
+                        .id(new ShowtimeSeat.ShowtimeSeatId())
+                        .showtime(showtime)
+                        .seat(seat)
                         .status(0)
                         .price(calculateSeatPrice(showtime, seat))
                         .build())
                 .toList();
-        reposistory.saveAll(showtimeSeats);
+        showtime.getShowtimeSeats().clear();
+        showtime.getShowtimeSeats().addAll(reposistory.saveAll(showtimeSeats));
     }
 
     public void deleteShowtimeSeats(Showtime showtime) {
@@ -46,5 +49,15 @@ public class ShowtimeSeatService {
 
     public List<ShowtimeSeatDTO> getShowtimeSeatsByShowtimeId(Long showtimeId) {
         return reposistory.findById_ShowtimeId(showtimeId).stream().map(ShowtimeSeat::convertToDTO).toList();
+    }
+
+    public void updateShowtimeSeatsStatus(Long showtimeId, List<String> seatNumbers, int status) {
+        List<ShowtimeSeat> showtimeSeats = seatNumbers.stream()
+                .map(seat -> reposistory.findById_ShowtimeIdAndSeat_SeatNumber(showtimeId, seat))
+                .toList();
+
+        for (ShowtimeSeat showtimeSeat : showtimeSeats) {
+            showtimeSeat.setStatus(status);
+        }
     }
 }

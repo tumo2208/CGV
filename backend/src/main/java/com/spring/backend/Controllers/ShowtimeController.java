@@ -6,6 +6,7 @@ import com.spring.backend.Exceptions.ResourceNotFoundException;
 import com.spring.backend.Services.Showtime.ShowtimeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,6 +26,7 @@ public class ShowtimeController {
     private ShowtimeService service;
 
     @PostMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity createShowtime(@RequestBody ShowtimeRequest req) {
         try {
             service.createShowtime(req);
@@ -39,6 +41,7 @@ public class ShowtimeController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity updateShowtime(@RequestBody ShowtimeRequest req, @PathVariable Long id) {
         try {
             service.updateShowtime(id, req);
@@ -51,6 +54,7 @@ public class ShowtimeController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity deleteShowtime(@PathVariable Long id) {
         try {
             service.deleteShowtime(id);

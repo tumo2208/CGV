@@ -45,9 +45,6 @@ public class Auditorium {
     @OneToMany(mappedBy = "auditorium", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Seat> seats = new ArrayList<>();
 
-    @OneToMany(mappedBy = "auditorium", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Showtime> showtimes = new ArrayList<>();
-
     public AuditoriumDTO convertToDTO() {
         return AuditoriumDTO.builder()
                 .id(this.id)
