@@ -34,3 +34,4 @@ build/
 
 .env
 src/main/resources/gcp-account-key.json
+src/main/resources/key.json
